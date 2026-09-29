@@ -43,7 +43,7 @@ public class App
                     break;
                 
                 case 3:
-                    resposta=turma.calcularMedia2();
+                    resposta=turma.calculaMedia3();
                     System.out.println(resposta);
                     continua=true;
                     break;

@@ -96,55 +96,60 @@ public class Turma {
         System.out.println("Digite o codgio do aluno");
         int cod=Integer.parseInt(scanner.nextLine());
         Aluno[] lista=this.getListaAlunos();
-        Aluno aluno=lista[cod];
-        if(aluno!=null){
-            int i=aluno.getAvaliacoesFeitas();
-            if(i<aluno.getNotas().length){
-                boolean repetir=true;
-                do {
-                    System.out.println("Digite a nova nota para cadastrar: ");
-                    double novaNota=Double.parseDouble(scanner.nextLine());
-                    if(novaNota<0||novaNota>10){
-                        System.out.println("Nota invalida. digite novamente");
-                        repetir=true;
-                    }else{
-                        System.out.println("Confirmar inclusão da nova nota? Digite:");
-                        System.out.println("1 - para confirmar");
-                        System.out.println("2 - para alterar a nota");
-                        System.out.println("3 - para cancelar");
-                        int opcao=Integer.parseInt(scanner.nextLine());
-                        switch (opcao) {
-                            case 1:
-                                double [] novasListaNotas=aluno.getNotas();
-                                novasListaNotas[i]=novaNota;
-                                aluno.setNotas(novasListaNotas);
-                                i+=1;
-                                aluno.setAvaliacoesFeitas(i);
-                                lista[cod]=aluno;
-                                this.setListaAlunos(lista);
-                                mensagem="Nota Cadastrada com sucesso!";
-                                repetir=false;
-                                break;
-                            case 2:
-                                System.out.println("alterar a nova nota");
-                                repetir=true;
-                                break;
-                            case 3:
-                                mensagem="operacao cancelada pelo usuário";
-                                repetir=false;
-                                break;
-                            default:
-                                System.out.println("opcao invalida. tnte novamente");
-                                repetir=true;
-                                break;
-                        }  
-                    }
-                } while (repetir==true);
-            }else{
-                mensagem="o aluno já fez todas as avaliações. não pode cadastrar";
-            }
+        if(cod<0||cod>lista.length){
+            mensagem="codigo invalido. tente novamente";
+            //return mensagem;
         }else{
-            mensagem="não existe aluno nessa posição";
+            Aluno aluno=lista[cod];
+            if(aluno!=null){
+                int i=aluno.getAvaliacoesFeitas();
+                if(i<aluno.getNotas().length){
+                    boolean repetir=true;
+                    do {
+                        System.out.println("Digite a nova nota para cadastrar: ");
+                        double novaNota=Double.parseDouble(scanner.nextLine());
+                        if(novaNota<0||novaNota>10){
+                            System.out.println("Nota invalida. digite novamente");
+                            repetir=true;
+                        }else{
+                            System.out.println("Confirmar inclusão da nova nota? Digite:");
+                            System.out.println("1 - para confirmar");
+                            System.out.println("2 - para alterar a nota");
+                            System.out.println("3 - para cancelar");
+                            int opcao=Integer.parseInt(scanner.nextLine());
+                            switch (opcao) {
+                                case 1:
+                                    double [] novasListaNotas=aluno.getNotas();
+                                    novasListaNotas[i]=novaNota;
+                                    aluno.setNotas(novasListaNotas);
+                                    i+=1;
+                                    aluno.setAvaliacoesFeitas(i);
+                                    lista[cod]=aluno;
+                                    this.setListaAlunos(lista);
+                                    mensagem="Nota Cadastrada com sucesso!";
+                                    repetir=false;
+                                    break;
+                                case 2:
+                                    System.out.println("alterar a nova nota");
+                                    repetir=true;
+                                    break;
+                                case 3:
+                                    mensagem="operacao cancelada pelo usuário";
+                                    repetir=false;
+                                    break;
+                                default:
+                                    System.out.println("opcao invalida. tnte novamente");
+                                    repetir=true;
+                                    break;
+                            }  
+                        }
+                    } while (repetir==true);
+                }else{
+                    mensagem="o aluno já fez todas as avaliações. não pode cadastrar";
+                }
+            }else{
+                mensagem="não existe aluno nessa posição";
+            }
         }
         return mensagem;
     }
@@ -186,6 +191,32 @@ public class Turma {
         }
         return mensagem;
     }
+
+    public String calculaMedia3(){
+        Aluno[] alunos=this.getListaAlunos();
+        for(Aluno aluno:alunos){
+            if(aluno==null){
+                continue;
+            }else{
+                int qtdNotas=aluno.getAvaliacoesFeitas();
+                if(qtdNotas==0){
+                    System.out.println(aluno+" - media=0");
+                }else{
+                    double soma=0;
+                    double [] listaNotas=aluno.getNotas();
+                    for(double nota:listaNotas){
+                        soma+=nota;
+                    }
+                    double media=soma/qtdNotas;
+                    System.out.println(aluno+" - media: "+media);
+                }
+            }
+        }
+        String mensagem="Fim do relatório de médias";
+        return mensagem;
+    }
+
+    
 
     public String mostrarTodosAlunos(){
         String mensagem="";
